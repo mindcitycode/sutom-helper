@@ -1,0 +1,42 @@
+document,
+body {
+    background-color: black;
+    color: white;
+    font-family: "Roboto Medium", Ubuntu, Arial, Helvetica, sans-serif;
+    font-size: 16px;
+}
+
+:root {
+    --color-blue: #0077c7;
+    --color-red: #e7002a;
+    --color-yellow: #ffbd00;
+    --color-black: #000000;
+}
+
+
+button.letter-cell {
+    border: 1px solid white;
+    padding: 0.5em;
+    margin: 3px;
+    background-color: var(--color-blue);
+    color: white;
+    text-transform: capitalize;
+    width : 24px;
+    text-align:center;
+}
+
+button.wrong-place {
+    background-color: var(--color-yellow);
+}
+
+button.right-place {
+    background-color: var(--color-red);
+}
+button.never-place {
+    background-color: var(--color-black);
+}
+.not-visible {
+    visibility: collapse;
+    height: 0;
+    width: 0;
+}
