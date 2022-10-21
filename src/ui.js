@@ -7,29 +7,59 @@ const el = (tagName, className, textContent, attributes) => {
     if (textContent) $e.textContent = textContent
     return $e
 }
+const resultCountText = resultCount => resultCount ? `${resultCount} résultats` : `aucun résultat`
+
+
 export const Ui = (letters, nCols, minWordLength, maxWordLength, solve) => {
     //letters, defaultWordLength, minWordLength, maxWordLength, solve
 
     const updateResults = () => {
-        const $letterCols = [...$c.querySelectorAll(".letter-col")].slice(0, nCols)
-        const pattern = $letterCols.map(() => '.')
-        const extra = []
-        const forbidden = []
-        $letterCols.forEach(($letterCol, colNum) => {
-            const $never = [...$letterCol.querySelectorAll('.never-place')]
-            if ($never.length) forbidden.push(...$never.map($letterCell => $letterCell.getAttribute('letter')))
-            const $wrong = [...$letterCol.querySelectorAll('.wrong-place')]
-            if ($wrong.length) extra.push(...$wrong.map($letterCell => $letterCell.getAttribute('letter')))
-            if ($wrong.length) pattern[colNum] = '/' + $wrong.map($letterCell => $letterCell.getAttribute('letter')).join('')
-            const $right = $letterCol.querySelectorAll('.right-place')[0]
-            if ($right) pattern[colNum] = $right.getAttribute('letter')
+        const gatherInput = () => {
+            const $letterCols = [...$c.querySelectorAll(".letter-col")].slice(0, nCols)
+            const pattern = $letterCols.map(() => '.')
+            const extra = []
+            const forbidden = []
+            $letterCols.forEach(($letterCol, colNum) => {
+                const $never = [...$letterCol.querySelectorAll('.never-place')]
+                if ($never.length) forbidden.push(...$never.map($letterCell => $letterCell.getAttribute('letter')))
+                const $wrong = [...$letterCol.querySelectorAll('.wrong-place')]
+                if ($wrong.length) extra.push(...$wrong.map($letterCell => $letterCell.getAttribute('letter')))
+                if ($wrong.length) pattern[colNum] = '/' + $wrong.map($letterCell => $letterCell.getAttribute('letter')).join('')
+                const $right = $letterCol.querySelectorAll('.right-place')[0]
+                if ($right) pattern[colNum] = $right.getAttribute('letter')
 
-        })
+            })
+            return { pattern, extra, forbidden }
+        }
+        const { pattern, extra, forbidden } = gatherInput()
+        const inputSummaryString = [
+            pattern.join(' '),
+            (extra.length ? (`+ ${extra.join(' ')}`) : (undefined)),
+            (forbidden.length ? (`- ${forbidden.join(' ')}`) : undefined)
+        ].filter(s => s !== undefined).join(' ')
+
+        $c.querySelector('.input-summary').textContent = inputSummaryString
+
         console.log('pattern', pattern)
         console.log('extra', extra)
         console.log('forbidden', forbidden)
-        const results = solve(pattern,extra,forbidden) 
-        $c.querySelector('.results').textContent = ( results.length?results:(['no result'])).join("\n")
+
+        const results = solve(pattern, extra, forbidden)
+        $c.querySelector('.result-count').textContent = resultCountText(results.length)
+        $c.querySelector('.results').textContent = (results.length ? results : ([''])).join("\n")
+
+        // update indirect forbidden
+        const $letterCells = [...$c.querySelectorAll('.letter-cell')]
+        $letterCells.forEach($letterCell => {
+            const letter = $letterCell.getAttribute('letter')
+
+
+            if (forbidden.includes(letter)) {
+                $letterCell.classList.add('indirect-forbidden')
+            } else {
+                $letterCell.classList.remove('indirect-forbidden')
+            }
+        })
     }
     const letterClicked = (letter, colNum) => ({ target: $letterCol }) => {
         circulateLetterStatus(letter, colNum, $letterCol)
@@ -61,6 +91,22 @@ export const Ui = (letters, nCols, minWordLength, maxWordLength, solve) => {
             cl.add("right-place")
         }
     }
+    const Container = (maxWordLength) => {
+        const $c = el('div', 'container')
+        return $c
+    }
+    const InputSummary = () => {
+        const $e = el('pre', 'input-summary')
+        return $e
+    }
+    const LetterCols = (maxWordLength) => {
+        const $c = el('div', 'container')
+        for (let i = 0; i < maxWordLength; i++) {
+            const $letterCol = LetterCol(i)
+            $c.appendChild($letterCol)
+        }
+        return $c
+    }
     const LetterCol = (colNum) => {
         const $letterCol = el('div', 'letter-col', undefined, { colNum })
         letters.forEach((letter, colNum) => {
@@ -84,21 +130,24 @@ export const Ui = (letters, nCols, minWordLength, maxWordLength, solve) => {
         $b.onclick = changeWordLength(-1)
         return $b
     }
+    const ResultCount = () => {
+        const $e = el('pre', 'result-count')
+        return $e
+    }
     const Results = () => {
         const $e = el('pre', 'results')
         return $e
     }
-
-    const $c = el('div', 'container')
-    document.body.appendChild($c)
-    for (let i = 0; i < maxWordLength; i++) {
-        const $letterCol = LetterCol(i)
-        $c.appendChild($letterCol)
-    }
-    updateColsVisibility()
+    const $c = Container()
+    $c.appendChild(InputSummary())
+    $c.appendChild(LetterCols(maxWordLength))
     $c.appendChild(AddCol())
     $c.appendChild(RemoveCol())
+    $c.appendChild(ResultCount())
     $c.appendChild(Results())
+    updateColsVisibility()
+    updateResults()
+    document.body.appendChild($c)
 
 
 }

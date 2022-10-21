@@ -13,18 +13,22 @@ body {
     --color-black: #000000;
 }
 
-
-button.letter-cell {
+button {
     border: 1px solid white;
     padding: 0.5em;
     margin: 3px;
+    width : 28px;
+    text-align:center;
+
+}
+button.letter-cell {
     background-color: var(--color-blue);
     color: white;
     text-transform: capitalize;
-    width : 24px;
-    text-align:center;
 }
-
+button.change-col-size {
+    border-radius : 5px;
+}
 button.wrong-place {
     background-color: var(--color-yellow);
 }
@@ -34,6 +38,14 @@ button.right-place {
 }
 button.never-place {
     background-color: var(--color-black);
+}
+button.indirect-forbidden {
+    filter : saturate(0.1)
+
+}
+.input-summary {
+    text-transform:  capitalize;
+    text-align:  center;
 }
 .not-visible {
     visibility: collapse;
