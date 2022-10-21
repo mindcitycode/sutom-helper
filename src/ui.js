@@ -7,7 +7,7 @@ const el = (tagName, className, textContent, attributes) => {
     if (textContent) $e.textContent = textContent
     return $e
 }
-const resultCountText = resultCount => resultCount ? `${resultCount} résultats` : `aucun résultat`
+const resultCountText = resultCount => resultCount ? `${resultCount} résultats` : (resultCount === 1 )?`unique résultat`:`aucun résultat`
 
 
 export const Ui = (letters, nCols, minWordLength, maxWordLength, solve) => {
