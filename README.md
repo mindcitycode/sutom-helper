@@ -1,6 +1,6 @@
 # sutom helper
 
-helps you cheat a sutom
+helps you cheat at sutom
 
 ![A screenshot where the word happens to be "tricher"](/screenshot.png?raw=true "screenshot")
 
