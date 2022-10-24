@@ -48,7 +48,6 @@ export const Ui = (letters, nCols, minWordLength, maxWordLength, solve) => {
         $c.querySelector('.result-count').textContent = resultCountText(results.length)
         $c.querySelector('.results').innerHTML = ''
 
-        //$c.querySelector('.results').textContent = (results.length ? results : ([''])).join("\n")
         const maxDisplayed = 200
         const displayList = results.slice(0,maxDisplayed)
         if (maxDisplayed < results.length){
@@ -159,8 +158,6 @@ export const Ui = (letters, nCols, minWordLength, maxWordLength, solve) => {
     $c.appendChild(InputSummary())
     $c.appendChild(LetterCols(maxWordLength))
     $c.appendChild(AddRemoveCol())
-   // $c.appendChild(AddCol())
-    //$c.appendChild(RemoveCol())
     $c.appendChild(ResultCount())
     $c.appendChild(Results())
     updateColsVisibility()
