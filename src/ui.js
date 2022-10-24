@@ -46,8 +46,19 @@ export const Ui = (letters, nCols, minWordLength, maxWordLength, solve) => {
 
         const results = solve(pattern, extra, forbidden)
         $c.querySelector('.result-count').textContent = resultCountText(results.length)
-        $c.querySelector('.results').textContent = (results.length ? results : ([''])).join("\n")
+        $c.querySelector('.results').innerHTML = ''
 
+        //$c.querySelector('.results').textContent = (results.length ? results : ([''])).join("\n")
+        const maxDisplayed = 200
+        const displayList = results.slice(0,maxDisplayed)
+        if (maxDisplayed < results.length){
+            displayList.push('...')
+        } 
+        displayList.forEach( result => {
+            const $e = el('span','result-word',result.toUpperCase())
+            $c.querySelector('.results').append($e)
+        })
+       
         // update indirect forbidden
         const $letterCells = [...$c.querySelectorAll('.letter-cell')]
         $letterCells.forEach($letterCell => {
@@ -130,19 +141,26 @@ export const Ui = (letters, nCols, minWordLength, maxWordLength, solve) => {
         $b.onclick = changeWordLength(-1)
         return $b
     }
+    const AddRemoveCol = () => {
+        const $e = el('div', 'change-col-size-bar')
+        $e.append(AddCol())
+        $e.append(RemoveCol())
+        return $e
+    }
     const ResultCount = () => {
-        const $e = el('pre', 'result-count')
+        const $e = el('div', 'result-count')
         return $e
     }
     const Results = () => {
-        const $e = el('pre', 'results')
+        const $e = el('div', 'results')
         return $e
     }
     const $c = Container()
     $c.appendChild(InputSummary())
     $c.appendChild(LetterCols(maxWordLength))
-    $c.appendChild(AddCol())
-    $c.appendChild(RemoveCol())
+    $c.appendChild(AddRemoveCol())
+   // $c.appendChild(AddCol())
+    //$c.appendChild(RemoveCol())
     $c.appendChild(ResultCount())
     $c.appendChild(Results())
     updateColsVisibility()

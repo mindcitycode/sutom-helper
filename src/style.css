@@ -17,18 +17,21 @@ button {
     border: 1px solid white;
     padding: 0.5em;
     margin: 3px;
-    width : 28px;
-    text-align:center;
+    width: 28px;
+    text-align: center;
 
 }
+
 button.letter-cell {
     background-color: var(--color-blue);
     color: white;
     text-transform: capitalize;
 }
+
 button.change-col-size {
-    border-radius : 5px;
+    border-radius: 5px;
 }
+
 button.wrong-place {
     background-color: var(--color-yellow);
 }
@@ -36,19 +39,35 @@ button.wrong-place {
 button.right-place {
     background-color: var(--color-red);
 }
+
 button.never-place {
     background-color: var(--color-black);
 }
-button.indirect-forbidden {
-    filter : saturate(0.1)
 
+button.indirect-forbidden {
+    filter: saturate(0.1)
 }
+
 .input-summary {
-    text-transform:  capitalize;
-    text-align:  center;
+    text-transform: capitalize;
+    text-align: center;
 }
+
 .not-visible {
     visibility: collapse;
     height: 0;
     width: 0;
+}
+
+div.letter-col {
+    text-align: center;
+}
+span.result-word {
+    display:block;
+}
+div.change-col-size-bar,
+div.result-count,
+div.results {
+    padding-top :1em;
+    text-align: center;
 }

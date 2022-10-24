@@ -4,7 +4,7 @@ import { Ui } from './ui'
 const start = async () => {
 
     const readProjectFile = async name => (await fetch(name)).text()
-    const words = await getWordList(Dictionaries.french, readProjectFile)
+    const words = await getWordList(Dictionaries.sutom, readProjectFile)
 
     const letters = words.join('').split('')
         .reduce((list, l) => {
@@ -20,7 +20,7 @@ const start = async () => {
     const maxWordLength = words.reduce((min, l) => Math.max(min, l.length), Number.NEGATIVE_INFINITY)
     
     const solve = solver(words)
-    const defaultWordLength = 5
+    const defaultWordLength = 6
     const ui = Ui(letters, defaultWordLength, minWordLength, maxWordLength, solve )
 
 
