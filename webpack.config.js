@@ -11,7 +11,7 @@ const config = {
         }),
         new CopyPlugin({
             patterns: [
-                { from: "dict", to: "dict" },
+                { from: "node_modules/sutom-solve-cli/dict", to: "dict" },
             ],
         }),
     ],
