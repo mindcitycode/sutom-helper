@@ -32,10 +32,20 @@ button.change-col-size {
     border-radius: 5px;
 }
 
+span.result-letter {
+    display:inline-block;
+    min-width : 1em;
+    border : 1px solid white;
+    padding : 2px;
+    background-color: var(--color-blue);
+}
+
+span.wrong-place,
 button.wrong-place {
     background-color: var(--color-yellow);
 }
 
+span.right-place,
 button.right-place {
     background-color: var(--color-red);
 }

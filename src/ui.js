@@ -44,6 +44,7 @@ export const Ui = (letters, nCols, minWordLength, maxWordLength, solve) => {
         console.log('extra', extra)
         console.log('forbidden', forbidden)
 
+        // solve
         const results = solve(pattern, extra, forbidden)
         $c.querySelector('.result-count').textContent = resultCountText(results.length)
         $c.querySelector('.results').innerHTML = ''
@@ -54,8 +55,18 @@ export const Ui = (letters, nCols, minWordLength, maxWordLength, solve) => {
             displayList.push('...')
         } 
         displayList.forEach( result => {
-            const $e = el('span','result-word',result.toUpperCase())
-            $c.querySelector('.results').append($e)
+            const letters = result.toUpperCase().split('')
+            //const $w = el('span','result-word',result.toUpperCase())
+            const $w = el('span','result-word')
+            letters.forEach( (letter,letterIndex) => {
+                const isWellPlaced = ( pattern[letterIndex].toUpperCase() === letter )
+                const isExtra = ( extra.find( extraletter => extraletter.toUpperCase() === letter ))
+                const $l = el('span','result-letter',letter)
+                if (isWellPlaced) $l.classList.add('right-place')
+                if (isExtra) $l.classList.add('wrong-place')
+                $w.append($l)
+            })
+            $c.querySelector('.results').append($w)
         })
        
         // update indirect forbidden
