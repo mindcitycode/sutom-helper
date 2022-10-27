@@ -28,15 +28,23 @@ button.letter-cell {
     text-transform: capitalize;
 }
 
-button.change-col-size {
-    border-radius: 5px;
+button.change-col-size-remove,
+button.change-col-size-add {
+    border-radius: 3px;
+    font-weight: bold;
 }
 
+button.change-col-size-remove:disabled,
+button.change-col-size-add:disabled {
+    filter: brightness(90%);
+}
+
+
 span.result-letter {
-    display:inline-block;
-    min-width : 1em;
-    border : 1px solid white;
-    padding : 2px;
+    display: inline-block;
+    min-width: 1em;
+    border: 1px solid white;
+    padding: 2px;
     background-color: var(--color-blue);
 }
 
@@ -72,12 +80,15 @@ button.indirect-forbidden {
 div.letter-col {
     text-align: center;
 }
+
 span.result-word {
-    display:block;
+    display: block;
+    margin-bottom: 4px;
 }
+
 div.change-col-size-bar,
 div.result-count,
 div.results {
-    padding-top :1em;
+    padding-top: 1em;
     text-align: center;
 }

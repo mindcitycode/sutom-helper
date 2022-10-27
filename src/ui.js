@@ -50,25 +50,25 @@ export const Ui = (letters, nCols, minWordLength, maxWordLength, solve) => {
         $c.querySelector('.results').innerHTML = ''
 
         const maxDisplayed = 200
-        const displayList = results.slice(0,maxDisplayed)
-        if (maxDisplayed < results.length){
+        const displayList = results.slice(0, maxDisplayed)
+        if (maxDisplayed < results.length) {
             displayList.push('...')
-        } 
-        displayList.forEach( result => {
+        }
+        displayList.forEach(result => {
             const letters = result.toUpperCase().split('')
             //const $w = el('span','result-word',result.toUpperCase())
-            const $w = el('span','result-word')
-            letters.forEach( (letter,letterIndex) => {
-                const isWellPlaced = ( pattern[letterIndex].toUpperCase() === letter )
-                const isExtra = ( extra.find( extraletter => extraletter.toUpperCase() === letter ))
-                const $l = el('span','result-letter',letter)
+            const $w = el('span', 'result-word')
+            letters.forEach((letter, letterIndex) => {
+                const isWellPlaced = (pattern[letterIndex].toUpperCase() === letter)
+                const isExtra = (extra.find(extraletter => extraletter.toUpperCase() === letter))
+                const $l = el('span', 'result-letter', letter)
                 if (isWellPlaced) $l.classList.add('right-place')
                 if (isExtra) $l.classList.add('wrong-place')
                 $w.append($l)
             })
             $c.querySelector('.results').append($w)
         })
-       
+
         // update indirect forbidden
         const $letterCells = [...$c.querySelectorAll('.letter-cell')]
         $letterCells.forEach($letterCell => {
@@ -88,6 +88,7 @@ export const Ui = (letters, nCols, minWordLength, maxWordLength, solve) => {
     }
     const changeWordLength = diff => () => {
         nCols = Math.max(minWordLength, Math.min(nCols + diff, maxWordLength))
+        updateAddRemoveLetterActivable()
         updateColsVisibility()
         updateResults()
     }
@@ -98,6 +99,11 @@ export const Ui = (letters, nCols, minWordLength, maxWordLength, solve) => {
             else $letterCol.classList.add('not-visible')
         })
     }
+    const updateAddRemoveLetterActivable = () => {
+        $c.querySelector('.change-col-size-add')[(nCols >= maxWordLength) ? 'setAttribute' : 'removeAttribute']('disabled', true)
+        $c.querySelector('.change-col-size-remove')[(nCols <= minWordLength) ? 'setAttribute' : 'removeAttribute']('disabled', true)
+    }
+
     const circulateLetterStatus = (letter, colNum, $letterCell) => {
         const cl = $letterCell.classList
         if (cl.contains("right-place")) {
@@ -142,19 +148,19 @@ export const Ui = (letters, nCols, minWordLength, maxWordLength, solve) => {
         return $letterCell
     }
     const AddCol = () => {
-        const $b = el('button', 'change-col-size', "+")
+        const $b = el('button', 'change-col-size-add', "+")
         $b.onclick = changeWordLength(1)
         return $b
     }
     const RemoveCol = () => {
-        const $b = el('button', 'change-col-size', "-")
+        const $b = el('button', 'change-col-size-remove', "-")
         $b.onclick = changeWordLength(-1)
         return $b
     }
     const AddRemoveCol = () => {
         const $e = el('div', 'change-col-size-bar')
-        $e.append(AddCol())
         $e.append(RemoveCol())
+        $e.append(AddCol())
         return $e
     }
     const ResultCount = () => {
@@ -172,6 +178,7 @@ export const Ui = (letters, nCols, minWordLength, maxWordLength, solve) => {
     $c.appendChild(ResultCount())
     $c.appendChild(Results())
     updateColsVisibility()
+    updateAddRemoveLetterActivable()
     updateResults()
     document.body.appendChild($c)
 
